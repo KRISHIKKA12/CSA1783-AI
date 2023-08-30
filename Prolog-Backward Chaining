@@ -1,0 +1,25 @@
+parent(john, mary).
+parent(john, david).
+parent(mary, lisa).
+parent(mary, tom).
+parent(david, emily).
+
+sibling(X, Y) :- parent(P, X), parent(P, Y), X \= Y.
+grandparent(X, Y) :- parent(X, Z), parent(Z, Y).
+
+is_sibling(X, Y) :- sibling(X, Y).
+is_sibling(X, Y) :- sibling(Y, X).
+
+is_grandparent(X, Y) :- grandparent(X, Y).
+
+start(X) :-
+    write('Enter a person\'s name: '),
+    read(Person),
+    nl,
+    write('Checking if '), write(Person), write(' has any siblings...'), nl,
+    (is_sibling(Person, Sibling) -> write(Sibling), write(' is a sibling of '), write(Person), nl;
+     write(Person), write(' has no known siblings.'), nl),
+    nl,
+    write('Checking if '), write(Person), write(' is a grandparent...'), nl,
+    (is_grandparent(Person, Grandchild) -> write(Grandchild), write(' is a grandchild of '), write(Person), nl;
+     write(Person), write(' is not known to be a grandparent.'), nl).
